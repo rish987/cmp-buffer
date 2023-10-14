@@ -58,14 +58,19 @@ source.complete = function(self, params, callback)
     end
   end
 
+  print("input:", string.sub(params.context.cursor_before_line, params.offset), "processing:", processing)
   vim.defer_fn(function()
     local input = string.sub(params.context.cursor_before_line, params.offset)
+    -- print("input here: ", input)
     local items = {}
     local words = {}
     for _, buf in ipairs(bufs) do
       for _, word_list in ipairs(buf:get_words()) do
         for word, _ in pairs(word_list) do
           if not words[word] and input ~= word then
+            if (word == "used") then
+              print(input, word)
+            end
             words[word] = true
             table.insert(items, {
               label = word,
